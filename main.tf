@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "jenkins" {
-  ami           = "ami-0d5eff06f840b45e9"  # Ubuntu 22.04 AMI ID (update with the latest AMI ID)
+  ami           = "ami-0d5eff06f840b45e9" 
   instance_type = "t2.micro"
   key_name      = "roee-aws1" 
 
@@ -26,7 +26,7 @@ resource "aws_instance" "jenkins" {
 }
 
 resource "aws_instance" "my_ubuntu" {
-  ami           = "ami-0d5eff06f840b45e9"  # Ubuntu 22.04 AMI ID (update with the latest AMI ID)
+  ami           = "ami-0d5eff06f840b45e9"  
   instance_type = "t2.micro"
   key_name      = "roee-aws1"  
 
@@ -45,7 +45,7 @@ resource "aws_instance" "my_ubuntu" {
 }
 
 resource "aws_instance" "my_windows" {
-  ami           = "ami-0c3f0ddf05e0e4e67"  # Windows AMI ID (update with the latest AMI ID)
+  ami           = "ami-0c3f0ddf05e0e4e67"  
   instance_type = "t2.micro"
   key_name      = "roee-aws1"  
 
