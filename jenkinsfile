@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/gagishmagi/ecommerce-django-react'
+                git 'https://github.com/roeealaluf/ecommerce-django-react'
             }
         }
         stage('Build') {
