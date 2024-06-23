@@ -66,10 +66,6 @@ pipeline {
                     body: "${env.BUILD_URL} \n ${log}",
                     recipientProviders: [[$class: 'DevelopersRecipientProvider']]
                 )
-                slackSend (
-                    color: "danger",
-                    message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}"
-                )
                 slackSend(channel: '#devops-project', color: 'danger', message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}")
                 jiraIssue(
                     site: 'https://ecommercedevops.atlassian.net/', 
