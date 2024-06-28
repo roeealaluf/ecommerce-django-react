@@ -3,7 +3,7 @@ pipeline {
 
     enviroment {
         DOCKER_HUB_CREDENTIALS = credentials('DockerHub')  
-        GIT_REPO = 'https://github.com/roeealaluf/ecommerce-django-react'
+        GIT_REPO = '    '
         GIT_CREDENTIALS_ID = 'Github'
         SLACK_CHANNEL = 'devops-project'
         JIRA_CREDENTIALS = credentials('Jira-credentials')
@@ -61,21 +61,17 @@ pipeline {
             echo 'Deployment successful!'
         }
         failure {
-            script {
-                def log = currentBuild.rawBuild.log
-                emailext(
-                    subject: "Build ${env.BUILD_NUMBER} Failed",
-                    body: "${env.BUILD_URL} \n ${log}",
-                    recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-                )
-                slackSend(channel: '#devops-project', color: 'danger', message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}")
-                jiraIssue(
-                    site: 'https://ecommercedevops.atlassian.net/', 
-                    issueKey: 'DevopsProject',
-                    issueSelector: [$class: 'DefaultIssueSelector']
-                    comment: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}"
-                )
-            }
+        script {
+            def msg = "Build failed at stage: ${currentBuild.currentResult}"
+            slackSend (channel: '#ci-cd', message: msg, tokenCredentialId: 'SLACK_CREDENTIALS')
+            jiraNewIssue site: 'JIRA_SITE', issue: [
+                fields: [
+                    project: [key: 'PROJ'],
+                    summary: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}",
+                    description: 'Build failed',
+                    issuetype: [name: 'Bug']
+                ]
+            ]
         }
     }
 }
