@@ -1,9 +1,9 @@
 pipeline {
     agent none
 
-    enviroment {
+    environment {
         DOCKER_HUB_CREDENTIALS = credentials('DockerHub')  
-        GIT_REPO = '    '
+        GIT_REPO = 'https://github.com/roeealaluf/ecommerce-django-react.git'
         GIT_CREDENTIALS_ID = 'Github'
         SLACK_CHANNEL = 'devops-project'
         JIRA_CREDENTIALS = credentials('Jira-credentials')
@@ -13,28 +13,32 @@ pipeline {
 
     stages {
         stage('Checkout') {
+            agent { label 'My-Ubuntu' }
             steps {
-                git 'https://github.com/roeealaluf/ecommerce-django-react'
+                git branch: 'main', credentialsId: GIT_CREDENTIALS_ID, url: GIT_REPO
             }
         }
         stage('Build') {
+            agent { label 'My-Ubuntu' }
             steps {
                 sh 'docker build -t myapp:latest .'
             }
         }
         stage('Test') {
+            agent { label 'My-Ubuntu' }
             steps {
                 sh 'test_user.py/unit'
                 sh 'test_products.py/e2e'
             }
         }
         stage('Docker Push') {
+            agent { label 'My-Ubuntu' }
             when {
                 branch 'main'
             }
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'DOCKER_HUB_CREDENTIALS') {
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
                         def app = docker.build("roeealaluf/myapp:${env.BUILD_NUMBER}")
                         app.push()
                         app.push('latest') 
@@ -43,7 +47,8 @@ pipeline {
             }
         }
         stage('Deploy to AWS') {
-            enviroment {
+            agent { label 'My-Windows' }
+            environment {
                 AWS_ACCESS_KEY_ID = credentials('aws-credentials')  
                 AWS_SECRET_ACCESS_KEY = credentials('aws-credentials')
             }
@@ -57,21 +62,22 @@ pipeline {
 
     post {
         success {
-            slackSend(channel: '#devops-project', color: 'good', message: "Build ${env.BUILD_NUMBER} Success: ${env.BUILD_URL}")
+            slackSend(channel: SLACK_CHANNEL, color: 'good', message: "Build ${env.BUILD_NUMBER} Success: ${env.BUILD_URL}")
             echo 'Deployment successful!'
         }
         failure {
-        script {
-            def msg = "Build failed at stage: ${currentBuild.currentResult}"
-            slackSend (channel: '#ci-cd', message: msg, tokenCredentialId: 'SLACK_CREDENTIALS')
-            jiraNewIssue site: 'JIRA_SITE', issue: [
-                fields: [
-                    project: [key: 'PROJ'],
-                    summary: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}",
-                    description: 'Build failed',
-                    issuetype: [name: 'Bug']
+            script {
+                def msg = "Build failed at stage: ${currentBuild.currentResult}"
+                slackSend (channel: '#ci-cd', message: msg, tokenCredentialId: 'SLACK_CREDENTIALS')
+                jiraNewIssue site: JIRA_SITE, issue: [
+                    fields: [
+                        project: [key: JIRA_PROJECT_KEY],
+                        summary: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}",
+                        description: 'Build failed',
+                        issuetype: [name: 'Bug']
+                    ]
                 ]
-            ]
+            }
         }
     }
 }
