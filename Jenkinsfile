@@ -62,7 +62,7 @@ pipeline {
 
     post {
         success {
-            slackSend(channel: SLACK_CHANNEL, color: 'good', message: "Build ${env.BUILD_NUMBER} Success: ${env.BUILD_URL}")
+            slackSend(channel: "devops_project", color: 'good', message: "Build ${env.BUILD_NUMBER} Success: ${env.BUILD_URL}")
             echo 'Deployment successful!'
         }
         failure {
