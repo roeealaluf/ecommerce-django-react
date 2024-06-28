@@ -68,7 +68,7 @@ pipeline {
         failure {
             script {
                 def msg = "Build failed at stage: ${currentBuild.currentResult}"
-                slackSend (channel: '#devops_project', message: "This build passed successfuly", tokenCredentialId: 'SLACK_CREDENTIALS')
+                slackSend (channel: '#devops_project', message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}")
                 jiraNewIssue site: JIRA_SITE, issue: [
                     fields: [
                         project: [key: JIRA_PROJECT_KEY],
