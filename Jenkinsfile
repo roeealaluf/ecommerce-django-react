@@ -1,11 +1,11 @@
 pipeline {
-    agent none
+    agent any
 
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('DockerHub')  
         GIT_REPO = 'https://github.com/roeealaluf/ecommerce-django-react.git'
         GIT_CREDENTIALS_ID = 'Github'
-        SLACK_CHANNEL = 'devops-project'
+        SLACK_CHANNEL = '#devops-project'
         JIRA_CREDENTIALS = credentials('Jira-credentials')
         JIRA_SITE = 'https://ecommercedevops.atlassian.net/jira/your-work'
         JIRA_PROJECT_KEY = 'DevopsProject' 
@@ -62,7 +62,7 @@ pipeline {
 
     post {
         success {
-            slackSend(channel: "devops_project", color: 'good', message: "Build ${env.BUILD_NUMBER} Success: ${env.BUILD_URL}")
+            slackSend(channel: "#devops_project", color: 'good', message: "Build ${env.BUILD_NUMBER} Success: ${env.BUILD_URL}")
             echo 'Deployment successful!'
         }
         failure {
