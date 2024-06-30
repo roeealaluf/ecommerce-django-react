@@ -69,7 +69,7 @@ pipeline {
         failure {
             script {
                 def msg = "Build failed at stage: ${currentBuild.currentResult}"
-                slackSend (channel: '#devops-project213', message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}")
+                slackSend (channel: '#devops-project', message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}")
 
                 def jirasite = 'https://ecommercedevops.atlassian.net'
                 jiraNewIssue site: jirasite, issue: [
