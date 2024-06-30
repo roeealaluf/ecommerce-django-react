@@ -8,7 +8,7 @@ pipeline {
         SLACK_CHANNEL = '#devops-project'
         SLACK_CREDENTIALS = "SlackWebHook"
         JIRA_CREDENTIALS = credentials('Jira-credential')
-        JIRA_SITE = 'https://ecommercedevops.atlassian.net/jira/software/projects/KAN/boards/1?atlOrigin=eyJpIjoiYzllOTlkZTU2NGQxNDQyOGEzOGY5NmYzYmFiY2UyMzkiLCJwIjoiaiJ9'
+        jirasite = 'https://ecommercedevops.atlassian.net'
         JIRA_PROJECT_KEY = 'DevopsProject' 
     }
 
@@ -63,14 +63,16 @@ pipeline {
 
     post {
         success {
-            slackSend(channel: "#devops_project", color: 'good', message: "Build ${env.BUILD_NUMBER} Success: ${env.BUILD_URL}")
+            slackSend(channel: "#devops-project", color: 'good', message: "Build ${env.BUILD_NUMBER} Success: ${env.BUILD_URL}")
             echo 'Deployment successful!'
         }
         failure {
             script {
                 def msg = "Build failed at stage: ${currentBuild.currentResult}"
-                slackSend (channel: '#devops_project', message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}")
-                jiraNewIssue site: JIRA_SITE, issue: [
+                slackSend (channel: '#devops-project', message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}")
+
+                def jirasite = 'https://ecommercedevops.atlassian.net'
+                jiraNewIssue site: jirasite, issue: [
                     fields: [
                         project: [key: JIRA_PROJECT_KEY],
                         summary: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}",
