@@ -28,8 +28,8 @@ pipeline {
         stage('Test') {
             agent { label 'My-Ubuntu' }
             steps {
-                sh 'test_user.py/unit'
-                sh 'test_products.py/e2e'
+                sh 'pip3 install -r requirements.txt'
+                sh 'python3 -m pytest'
             }
         }
         stage('Docker Push') {
@@ -64,7 +64,7 @@ pipeline {
     post {
         success {
             slackSend(channel: "#devops-project", color: 'good', message: "Build ${env.BUILD_NUMBER} Success: ${env.BUILD_URL}")
-            echo 'Deployment successful!'
+            echo 'Deployment successful! '
         }
         failure {
             script {

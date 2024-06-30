@@ -214,6 +214,7 @@ resource "aws_instance" "my_ubuntu" {
               sudo systemctl start docker
               sudo systemctl enable docker
               sudo apt-get install -y awscli
+              sudo apt-get install -y python3 python3-pip
               sudo apt-get install -y mysql-client
               mysql -u admin -p'your_password' -h ${aws_instance.mysql.public_ip} -e "CREATE DATABASE jenkins;"
               aws s3 cp . s3://${aws_s3_bucket.instance_data_bucket.bucket}/ubuntu/ --recursive
@@ -250,6 +251,7 @@ resource "aws_instance" "my_windows" {
               Invoke-WebRequest -Uri "https://awscli.amazonaws.com/AWSCLIV2.msi" -OutFile "C:\\AWSCLIV2.msi"
               Start-Process -FilePath "msiexec.exe" -ArgumentList "/i C:\\AWSCLIV2.msi /quiet" -Wait
               sudo apt-get install -y mysql-client
+              sudo apt-get install -y python3 python3-pip
               mysql -u admin -p'your_password' -h ${aws_instance.mysql.public_ip} -e "CREATE DATABASE jenkins;"
               aws s3 cp . s3://${aws_s3_bucket.instance_data_bucket.bucket}/ubuntu/ --recursive
               </powershell>
