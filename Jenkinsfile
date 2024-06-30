@@ -74,7 +74,7 @@ pipeline {
                 def jirasite = 'https://ecommercedevops.atlassian.net'
                 jiraNewIssue site: jirasite, issue: [
                     fields: [
-                        project: [key: JIRA_PROJECT_KEY],
+                        project: [key: "${JIRA_PROJECT_KEY}"],
                         summary: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}",
                         description: 'Build failed',
                         issuetype: [name: 'Bug']
