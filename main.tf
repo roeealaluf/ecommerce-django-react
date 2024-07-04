@@ -198,7 +198,7 @@ resource "aws_instance" "jenkins" {
 resource "aws_instance" "my_ubuntu" {
   ami                   = "ami-07c0a4909b86650c0"
   instance_type         = "t3.micro"
-  key_name              = "aws-roee1"                 
+  key_name              = "aws-roee1 "                 
   iam_instance_profile  = aws_iam_instance_profile.ec2_instance_profile.name
   security_groups       = [aws_security_group.instance_sg.name]
 
