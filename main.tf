@@ -198,13 +198,18 @@ resource "aws_instance" "jenkins" {
 resource "aws_instance" "my_ubuntu" {
   ami                   = "ami-07c0a4909b86650c0"
   instance_type         = "t3.micro"
-  key_name              = "aws-roee1"
+  key_name              = "aws-roee1"                 
   iam_instance_profile  = aws_iam_instance_profile.ec2_instance_profile.name
   security_groups       = [aws_security_group.instance_sg.name]
 
   tags = {
     Name = "My-Ubuntu"
   }
+  root_block_device {
+    volume_size = 30                      
+    volume_type = "gp2"                   
+  }
+
 
   user_data = <<-EOF
               #!/bin/bash
@@ -251,7 +256,7 @@ resource "aws_instance" "my_windows" {
               Invoke-WebRequest -Uri "https://awscli.amazonaws.com/AWSCLIV2.msi" -OutFile "C:\\AWSCLIV2.msi"
               Start-Process -FilePath "msiexec.exe" -ArgumentList "/i C:\\AWSCLIV2.msi /quiet" -Wait
               sudo apt-get install -y mysql-client
-              sudo apt-get install -y python3 python3-pip
+                            sudo apt-get install -y python3 python3-pip
               mysql -u admin -p'your_password' -h ${aws_instance.mysql.public_ip} -e "CREATE DATABASE jenkins;"
               aws s3 cp . s3://${aws_s3_bucket.instance_data_bucket.bucket}/ubuntu/ --recursive
               </powershell>
