@@ -18,15 +18,6 @@ pipeline {
                 git branch: 'main', credentialsId: GIT_CREDENTIALS_ID, url: GIT_REPO
             }
         }
-        stage('Install Dependencies') {
-            agent { label 'My-Ubuntu' }
-            steps {
-                sh '''
-                    sudo apt-get update
-                    sudo apt-get install -y python3-dev python3-pip libjpeg-dev zlib1g-dev libpng-dev libfreetype6-dev liblcms2-dev libtiff5-dev libopenjp2-7 libwebp-dev tcl8.6-dev tk8.6-dev
-                '''
-            }
-        }
         stage('Build') {
             agent { label 'My-Ubuntu' }
             steps {
