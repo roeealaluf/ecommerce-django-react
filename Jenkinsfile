@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
-                        def app = docker.build("roeealaluf/myapp:${env.BUILD_NUMBER}")
+                        def app = docker.build("roeealaluf/ecommerceproject:${env.BUILD_NUMBER}")
                         app.push()
                         app.push('latest')
                     }
@@ -57,6 +57,7 @@ pipeline {
             steps {
                 script {
                     sh 'aws ec2 start-instances --instance-ids i-0b7c78d04d47e4379 --region il-central-1'
+                    sh python -m pytest
                 }
             }
         }
