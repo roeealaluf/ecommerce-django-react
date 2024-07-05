@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('DockerHub')
+        DOCKER_HUB_CREDENTIALS = credentials('roee.alaluf44@gmail.com/****** (DockerHub)')
         GIT_REPO = 'https://github.com/roeealaluf/ecommerce-django-react.git'
         SLACK_CHANNEL = '#devops-project'
         SLACK_CREDENTIALS = "Slack-token"
