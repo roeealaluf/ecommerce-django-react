@@ -22,10 +22,7 @@ pipeline {
             steps {
                 script {
                     def dockerImage = docker.build("roeealaluf/ecommerceproject:latest")
-                    dockerImage.inside {
-                        sh 'docker build -t roeealaluf/ecommerceproject:latest .'
-                        sh "docker tag roeealaluf/ecommerceproject:latest roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
-                    }
+                    sh "docker tag roeealaluf/ecommerceproject:latest roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
                 }
             }
         }
