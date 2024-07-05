@@ -6,6 +6,7 @@ pipeline {
         GIT_REPO = 'https://github.com/roeealaluf/ecommerce-django-react.git'
         SLACK_CHANNEL = '#devops-project'
         SLACK_CREDENTIALS = "Slack-token"
+        AWS_CREDENTIALS = credentials('AWS-CREDENTIALS')
         // JIRA_CREDENTIALS = credentials('Jira-credential')
         // jirasite = 'https://ecommercedevops.atlassian.net'
         // JIRA_PROJECT_KEY = 'DevopsProject'
@@ -50,8 +51,8 @@ pipeline {
         stage('Deploy to AWS') {
             agent { label 'My-Ubuntu' }
             environment {
-                AWS_ACCESS_KEY_ID = credentials('aws-credential')
-                AWS_SECRET_ACCESS_KEY = credentials('aws-credential')
+                AWS_ACCESS_KEY_ID = credentials('AWS-CREDENTIALS')
+                AWS_SECRET_ACCESS_KEY = credentials('AWS-CREDENTIALS')
             }
             steps {
                 script {
