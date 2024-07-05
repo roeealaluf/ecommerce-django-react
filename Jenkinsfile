@@ -26,12 +26,11 @@ pipeline {
         }
         stage('Docker Push') {
             agent { label 'My-Ubuntu' }
-            when {
-                branch 'main'
-            }
             steps {
                 script {
+                    echo "DockerHub Credentials ID: ${DOCKER_HUB_CREDENTIALS}"
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
+                        sh 'docker login -u $DOCKER_HUB_CREDENTIALS_USR -p $DOCKER_HUB_CREDENTIALS_PSW'
                         sh "docker push roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
                         sh "docker push roeealaluf/ecommerceproject:latest"
                     }
@@ -40,14 +39,11 @@ pipeline {
         }
         stage('Deploy to AWS') {
             agent { label 'My-Ubuntu' }
-            environment {
-                AWS_ACCESS_KEY_ID = credentials('AWS-CREDENTIALS')
-                AWS_SECRET_ACCESS_KEY = credentials('AWS-CREDENTIALS')
-            }
             steps {
                 script {
                     sh 'aws ec2 start-instances --instance-ids i-0b7c78d04d47e4379 --region il-central-1 '
                     sh 'pip install pytest'
+                    sh 'pip install -r requirements.txt'
                     sh 'python3 -m pytest'
                 }
             }
