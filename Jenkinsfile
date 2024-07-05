@@ -79,7 +79,7 @@ pipeline {
                 //         issuetype: [name: 'Bug']
                 //     ]   
                 // ]
-            }
+            // }
         }
     }
 }
