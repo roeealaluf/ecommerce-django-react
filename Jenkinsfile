@@ -19,7 +19,8 @@ pipeline {
         stage('Build') {
             agent { label 'My-Ubuntu' }
             steps {
-                sh 'docker build -t myapp:latest .'
+                sh 'docker build -t roeealaluf/ecommerceproject:latest .'
+                sh "docker tag roeealaluf/ecommerceproject:latest roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
             }
         }
         stage('Docker Push') {
@@ -31,6 +32,7 @@ pipeline {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
                         def app = docker.build("roeealaluf/ecommerceproject:${env.BUILD_NUMBER}")
+                        sh "docker push roeealaluf/ecommerceproject:latest"
                         app.push()
                         app.push('latest')
                     }
