@@ -6,7 +6,8 @@ pipeline {
         GIT_REPO = 'https://github.com/roeealaluf/ecommerce-django-react.git'
         SLACK_CHANNEL = '#devops-project'
         SLACK_CREDENTIALS = "Slack-token"
-        AWS_CREDENTIALS = credentials('AWS-CREDENTIALS')
+        AWS_ACCESS_KEY_ID = credentials('AWS-CREDENTIALS')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS-CREDENTIALS')
     }
 
     stages {
@@ -46,7 +47,7 @@ pipeline {
             steps {
                 script {
                     sh 'aws ec2 start-instances --instance-ids i-0b7c78d04d47e4379 --region il-central-1 '
-                    sh python3 -m pytest
+                    sh 'python3 -m pytest'
                 }
             }
         }
