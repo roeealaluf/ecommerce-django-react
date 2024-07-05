@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                     sh 'aws ec2 start-instances --instance-ids i-0b7c78d04d47e4379 --region il-central-1 '
-                    sh python -m pytest
+                    sh python3 -m pytest
                 }
             }
         }
