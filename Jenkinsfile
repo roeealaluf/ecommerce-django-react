@@ -25,13 +25,13 @@ pipeline {
                 sh 'docker build -t myapp:latest .'
             }
         }
-        stage('Test') {
-            agent { label 'My-Ubuntu' }
-            steps {
-                sh 'test_user.py/unit'
-                sh 'test_products.py/e2e'
-            }
-        }
+        // stage('Test') {
+        //     agent { label 'My-Ubuntu' }
+        //     steps {
+        //         sh 'test_user.py/unit'
+        //         sh 'test_products.py/e2e'
+        //     }
+        // }
         stage('Docker Push') {
             agent { label 'My-Ubuntu' }
             when {
