@@ -30,9 +30,7 @@ pipeline {
             agent { label 'My-Ubuntu' }
             steps {
                 script {
-                    echo "DockerHub Credentials ID: ${DOCKER_HUB_CREDENTIALS}"
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
-                        sh 'docker login -u $DOCKER_HUB_CREDENTIALS_USR -p $DOCKER_HUB_CREDENTIALS_PSW'
                         sh "docker push roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
                         sh "docker push roeealaluf/ecommerceproject:latest"
                     }
