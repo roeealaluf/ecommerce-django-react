@@ -41,7 +41,14 @@ pipeline {
             agent { label 'My-Ubuntu' }
             steps {
                 script {
-                    sh 'aws ec2 start-instances --instance-ids i-0b7c78d04d47e4379 --region il-central-1 '
+                    withCredentials([string(credentialsId: 'AWS-ACCESS-KEY-ID', variable: 'AWS_ACCESS_KEY_ID'),
+                                     string(credentialsId: 'AWS-SECRET-ACCESS-KEY', variable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh '''
+                            export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+                            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+                            aws ec2 start-instances --instance-ids i-0b7c78d04d47e4379 --region il-central-1
+                        '''
+                    }
                     sh 'pip install pytest'
                     sh 'pip install -r requirements.txt'
                     sh 'python3 -m pytest'
