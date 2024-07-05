@@ -7,9 +7,9 @@ pipeline {
         GIT_CREDENTIALS_ID = 'Github'
         SLACK_CHANNEL = '#devops-project'
         SLACK_CREDENTIALS = "SlackWebHook"
-        // JIRA_CREDENTIALS = credentials('Jira-credential')
-        // jirasite = 'https://ecommercedevops.atlassian.net'
-        // JIRA_PROJECT_KEY = 'DevopsProject' 
+        JIRA_CREDENTIALS = credentials('Jira-credential')
+        jirasite = 'https://ecommercedevops.atlassian.net'
+        JIRA_PROJECT_KEY = 'DevopsProject' 
     }
 
     stages {
@@ -28,8 +28,8 @@ pipeline {
         stage('Test') {
             agent { label 'My-Ubuntu' }
             steps {
-                sh 'pip3 install -r requirements.txt'
-                sh 'python3 -m pytest'
+                sh 'test_user.py/unit'
+                sh 'test_products.py/e2e'
             }
         }
         stage('Docker Push') {
@@ -71,15 +71,15 @@ pipeline {
                 def msg = "Build failed at stage: ${currentBuild.currentResult}"
                 slackSend (channel: '#devops-project', message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}")
 
-                // def jirasite = 'https://ecommercedevops.atlassian.net'
-                // jiraNewIssue site: jirasite, issue: [
-                //     fields: [
-                //         project: [key: "${env.JIRA_PROJECT_KEY}"],
-                //         summary: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}",
-                //         description: 'Build failed',
-                //         issuetype: [name: 'Bug']
-                //     ]   
-                // ]
+                def jirasite = 'https://ecommercedevops.atlassian.net'
+                jiraNewIssue site: jirasite, issue: [
+                    fields: [
+                        project: [key: JIRA_PROJECT_KEY],
+                        summary: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}",
+                        description: 'Build failed',
+                        issuetype: [name: 'Bug']
+                    ]   
+                ]
             }
         }
     }
