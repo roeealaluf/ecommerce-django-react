@@ -7,9 +7,6 @@ pipeline {
         SLACK_CHANNEL = '#devops-project'
         SLACK_CREDENTIALS = "Slack-token"
         AWS_CREDENTIALS = credentials('AWS-CREDENTIALS')
-        // JIRA_CREDENTIALS = credentials('Jira-credential')
-        // jirasite = 'https://ecommercedevops.atlassian.net'
-        // JIRA_PROJECT_KEY = 'DevopsProject'
     }
 
     stages {
@@ -25,14 +22,6 @@ pipeline {
                 sh 'docker build -t myapp:latest .'
             }
         }
-        // Commented out the Test stage
-        // stage('Test') {
-        //     agent { label 'My-Ubuntu' }
-        //     steps {
-        //         sh 'pip3 install -r requirements.txt'
-        //         sh 'python3 -m pytest'
-        //     }
-        // }
         stage('Docker Push') {
             agent { label 'My-Ubuntu' }
             when {
@@ -72,16 +61,6 @@ pipeline {
             script {
                 def msg = "Build failed at stage: ${currentBuild.currentResult}"
                 slackSend(channel: SLACK_CHANNEL, message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}")
-
-                // def jirasite = 'https://ecommercedevops.atlassian.net'
-                // jiraNewIssue site: jirasite, issue: [
-                //     fields: [
-                //         project: [key: "${env.JIRA_PROJECT_KEY}"],
-                //         summary: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}",
-                //         description: 'Build failed',
-                //         issuetype: [name: 'Bug']
-                //     ]
-                // ]
             }
         }
     }
