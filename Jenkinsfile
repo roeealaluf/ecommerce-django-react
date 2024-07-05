@@ -47,7 +47,7 @@ pipeline {
             }
         }
         stage('Deploy to AWS') {
-            agent { label 'My-Ubuntu' }
+            agent { label 'My-Windows' }
             environment {
                 AWS_ACCESS_KEY_ID = credentials('aws-credential')  
                 AWS_SECRET_ACCESS_KEY = credentials('aws-credential')
@@ -82,4 +82,4 @@ pipeline {
             }
         }
     }
-// }
+}
