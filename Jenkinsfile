@@ -15,7 +15,7 @@ pipeline {
         stage('Checkout') {
             agent { label 'My-Ubuntu' }
             steps {
-                git branch: 'main', credentialsId: GIT_CREDENTIALS_ID, url: GIT_REPO
+                git branch: 'main', url: GIT_REPO
             }
         }
         stage('Build') {
