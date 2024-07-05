@@ -31,10 +31,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
-                        def app = docker.build("roeealaluf/ecommerceproject:${env.BUILD_NUMBER}")
+                        sh "docker push roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
                         sh "docker push roeealaluf/ecommerceproject:latest"
-                        app.push()
-                        app.push('latest')
                     }
                 }
             }
