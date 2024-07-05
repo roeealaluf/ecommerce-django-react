@@ -4,7 +4,6 @@ pipeline {
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('DockerHub')  
         GIT_REPO = 'https://github.com/roeealaluf/ecommerce-django-react.git'
-        GIT_CREDENTIALS_ID = 'Github'
         SLACK_CHANNEL = '#devops-project'
         SLACK_CREDENTIALS = "Slack-token"
         // JIRA_CREDENTIALS = credentials('Jira-credential')
@@ -28,10 +27,10 @@ pipeline {
         // stage('Test') {
         //     agent { label 'My-Ubuntu' }
         //     steps {
-        //         sh 'test_user.py/unit'
-        //         sh 'test_products.py/e2e'
+        //         sh 'pip3 install -r requirements.txt'
+        //         sh 'python3 -m pytest'
         //     }
-        // }
+        }
         stage('Docker Push') {
             agent { label 'My-Ubuntu' }
             when {
@@ -48,7 +47,7 @@ pipeline {
             }
         }
         stage('Deploy to AWS') {
-            agent { label 'My-Windows' }
+            agent { label 'My-Ubuntu' }
             environment {
                 AWS_ACCESS_KEY_ID = credentials('aws-credential')  
                 AWS_SECRET_ACCESS_KEY = credentials('aws-credential')
@@ -74,7 +73,7 @@ pipeline {
                 // def jirasite = 'https://ecommercedevops.atlassian.net'
                 // jiraNewIssue site: jirasite, issue: [
                 //     fields: [
-                //         project: [key: JIRA_PROJECT_KEY],
+                //         project: [key: "${env.JIRA_PROJECT_KEY}"],
                 //         summary: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}",
                 //         description: 'Build failed',
                 //         issuetype: [name: 'Bug']
