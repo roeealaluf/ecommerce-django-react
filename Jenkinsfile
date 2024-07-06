@@ -48,10 +48,18 @@ pipeline {
             def instanceId = sh(script: "aws ec2 describe-instances --region ${AWS_REGION} --filters Name=tag:Name,Values=${INSTANCE_NAME} --query 'Reservations[0].Instances[0].InstanceId' --output text", returnStdout: true).trim()
             sh "aws ec2 start-instances --instance-ids ${instanceId} --region ${AWS_REGION}"
         }
-    }                }
-            }
+    }             
+
+          // stage('Test') {
+        //     agent { label 'My-Ubuntu' }
+        //     steps {
+        //         sh 'test_user.py/unit'
+        //         sh 'test_products.py/e2e'
+        //         sh 'pip3 install -r requirements.txt'
+        //         sh 'python3 -m pytest'
+        //     }
+        // }
         }
-    }
 
     post {
         success {
@@ -65,4 +73,3 @@ pipeline {
             }
         }
     }
-}
