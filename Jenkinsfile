@@ -49,7 +49,7 @@ pipeline {
             sh "aws ec2 start-instances --instance-ids ${instanceId} --region ${AWS_REGION}"
         }
     }             
-
+}
           // stage('Test') {
         //     agent { label 'My-Ubuntu' }
         //     steps {
@@ -74,4 +74,3 @@ pipeline {
             }
         }
     }
-} 
