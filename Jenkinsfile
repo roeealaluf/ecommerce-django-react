@@ -26,20 +26,6 @@ pipeline {
         }
         stage('Docker Push') {
             agent { label 'My-Ubuntu' }
-            when {
-                branch 'main'
-            }
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
-                        def app = docker.build("roeealaluf/myapp:${env.BUILD_NUMBER}")
-                        app.push('latest')
-                    }
-                }
-            }
-        }
-        stage('Docker Push') {
-            agent { label 'My-Ubuntu' }
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'DockerHub', url: 'https://index.docker.io/v1/') {
@@ -48,6 +34,15 @@ pipeline {
                 }
             }
         }
+
+        stage('Run Docker Container') {
+            agent { label 'My-Ubuntu' }
+            steps {
+                script {
+                    sh "docker run -d -p 8000:8000 roeealaluf/myapp:${env.BUILD_NUMBER}"
+        }
+    }             
+}
           // stage('Test') {
         //     agent { label 'My-Ubuntu' }
         //     steps {
