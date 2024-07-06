@@ -41,8 +41,8 @@ pipeline {
         stage('Deploy to AWS') {
             agent { label 'My-Ubuntu' }
             environment {
-                AWS_ACCESS_KEY_ID = ${AWS_CREDENTIALS_USR}
-                AWS_SECRET_ACCESS_KEY = ${AWS_CREDENTIALS_PSW}
+                AWS_ACCESS_KEY_ID = "${AWS_CREDENTIALS_USR}"
+                AWS_SECRET_ACCESS_KEY = "${AWS_CREDENTIALS_PSW}"
             }
             steps {
                 script {
