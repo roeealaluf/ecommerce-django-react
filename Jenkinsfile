@@ -30,7 +30,7 @@ pipeline {
             agent { label 'My-Ubuntu' }
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
+                    docker.withRegistry('https://hub.docker.com/repository/docker/roeealaluf/ecommerceproject/general', DOCKER_HUB_CREDENTIALS) {
                         sh "docker push roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
                         sh "docker push roeealaluf/ecommerceproject:latest"
                     }
