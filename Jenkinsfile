@@ -39,16 +39,11 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to AWS') {
+        stage('Run Docker Container') {
             agent { label 'My-Ubuntu' }
-            environment {
-                AWS_ACCESS_KEY_ID = "${AWS_CREDENTIALS_USR}"
-                AWS_SECRET_ACCESS_KEY = "${AWS_CREDENTIALS_PSW}"
-            }
             steps {
                 script {
-                    def instanceId = sh(script: "aws ec2 describe-instances --region ${AWS_REGION} --filters Name=tag:Name,Values=${INSTANCE_NAME} --query 'Reservations[0].Instances[0].InstanceId' --output text", returnStdout: true).trim()
-                    sh "aws ec2 start-instances --instance-ids ${instanceId} --region ${AWS_REGION}"
+                    sh 'docker run -d -p 8000:8000 roeealaluf/myapp:${env.BUILD_NUMBER}' 
         }
     }             
 }
