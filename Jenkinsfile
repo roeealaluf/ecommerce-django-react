@@ -30,7 +30,7 @@ pipeline {
             agent { label 'My-Ubuntu' }
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'DockerHub', url: 'https://github.com/roeealaluf/ecommerce-django-react') {
+                    withDockerRegistry(credentialsId: 'DockerHub', url: 'https://hub.docker.com/r/roeealaluf/ecommerceproject') {
                         sh "docker push roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
                         sh "docker push roeealaluf/ecommerceproject:latest"
                     }
