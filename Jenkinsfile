@@ -33,7 +33,6 @@ pipeline {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
                         def app = docker.build("roeealaluf/myapp:${env.BUILD_NUMBER}")
-                        app.push()
                         app.push('latest')
                     }
                 }
