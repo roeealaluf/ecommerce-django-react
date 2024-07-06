@@ -38,14 +38,16 @@ pipeline {
                 }
             }
         }
-//         stage('Run Docker Container') {
-//             agent { label 'My-Ubuntu' }
-//             steps {
-//                 script {
-//                     sh "docker run -d -p 8000:8000 roeealaluf/myapp:${env.BUILD_NUMBER}"
-//         }
-//     }             
-// }
+        stage('Docker Push') {
+            agent { label 'My-Ubuntu' }
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'DockerHub', url: 'https://index.docker.io/v1/') {
+                        sh "docker push roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
+                    }
+                }
+            }
+        }
           // stage('Test') {
         //     agent { label 'My-Ubuntu' }
         //     steps {
