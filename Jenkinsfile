@@ -30,7 +30,7 @@ pipeline {
             agent { label 'My-Ubuntu' }
             steps {
                 script {
-                    docker.withRegistry('https://hub.docker.com/repository/docker/roeealaluf/ecommerceproject/general', DOCKER_HUB_CREDENTIALS) {
+                    withDockerRegistry(credentialsId: 'DockerHub', toolName: 'DockerHub'){
                         sh "docker push roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
                         sh "docker push roeealaluf/ecommerceproject:latest"
                     }
@@ -39,7 +39,7 @@ pipeline {
         }
         stage('Deploy to AWS') {
             agent { label 'My-Ubuntu' }
-            steps {
+            steps { 
                 script {
                     withCredentials([string(credentialsId: 'AWS-ACCESS-KEY-ID', variable: 'AWS_ACCESS_KEY_ID'),
                                      string(credentialsId: 'AWS-SECRET-ACCESS-KEY', variable: 'AWS_SECRET_ACCESS_KEY')]) {
