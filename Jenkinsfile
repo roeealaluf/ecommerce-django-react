@@ -35,14 +35,14 @@ pipeline {
             }
         }
 
-//         stage('Run Docker Container') {
-//             agent { label 'My-Ubuntu' }
-//             steps {
-//                 script {
-//                     sh "docker run -d -p 8000:8000 roeealaluf/myapp:${env.BUILD_NUMBER}"
-//         }
-//     }             
-// }
+        stage('Run Docker Container') {
+            agent { label 'My-Ubuntu' }
+            steps {
+                script {
+                    sh "docker run -d -p 8000:8000 roeealaluf/ecommerceproject:latest"
+        }
+    }             
+}
           // stage('Test') {
         //     agent { label 'My-Ubuntu' }
         //     steps {
