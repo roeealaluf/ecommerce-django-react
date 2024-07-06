@@ -6,8 +6,7 @@ pipeline {
         GIT_REPO = 'https://github.com/roeealaluf/ecommerce-django-react.git'
         SLACK_CHANNEL = '#devops-project'
         SLACK_CREDENTIALS = "Slack-token"
-        AWS_ACCESS_KEY_ID = credentials('AWS-CREDENTIALS')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS-CREDENTIALS')
+        AWS_CREDENTIALS = credentials('AWS-CREDENTIALS')
     }
 
     stages {
@@ -20,39 +19,36 @@ pipeline {
         stage('Build') {
             agent { label 'My-Ubuntu' }
             steps {
-                script {
-                    def dockerImage = docker.build("roeealaluf/ecommerceproject:latest")
-                    sh "docker tag roeealaluf/ecommerceproject:latest roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
-                }
+                sh 'docker build -t myapp:latest .'
             }
         }
         stage('Docker Push') {
             agent { label 'My-Ubuntu' }
+            when {
+                branch 'main'
+            }
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'DockerHub', url: 'https://index.docker.io/v1/') {
-                        sh "docker push roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
-                        sh "docker push roeealaluf/ecommerceproject:latest"
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
+                        def app = docker.build("roeealaluf/myapp:${env.BUILD_NUMBER}")
+                        app.push()
+                        app.push('latest')
                     }
                 }
             }
         }
         stage('Deploy to AWS') {
             agent { label 'My-Ubuntu' }
-            steps { 
+            environment {
+                AWS_ACCESS_KEY_ID = credentials('AWS-CREDENTIALS')
+                AWS_SECRET_ACCESS_KEY = credentials('AWS-CREDENTIALS')
+            }
+            steps {
                 script {
-                    withCredentials([string(credentialsId: 'AWS-ACCESS-KEY-ID', variable: 'AWS_ACCESS_KEY_ID'),
-                                     string(credentialsId: 'AWS-SECRET-ACCESS-KEY', variable: 'AWS_SECRET_ACCESS_KEY')]) {
-                        sh '''
-                            export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-                            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-                            aws ec2 start-instances --instance-ids i-0b7c78d04d47e4379 --region il-central-1
-                        '''
-                    }
-                    sh 'pip install pytest'
-                    sh 'pip install -r requirements.txt'
-                    sh 'python3 -m pytest'
-                }
+            def instanceId = sh(script: "aws ec2 describe-instances --region ${AWS_REGION} --filters Name=tag:Name,Values=${INSTANCE_NAME} --query 'Reservations[0].Instances[0].InstanceId' --output text", returnStdout: true).trim()
+            sh "aws ec2 start-instances --instance-ids ${instanceId} --region ${AWS_REGION}"
+        }
+    }                }
             }
         }
     }
