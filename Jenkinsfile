@@ -7,6 +7,7 @@ pipeline {
         SLACK_CHANNEL = '#devops-project'
         SLACK_CREDENTIALS = "Slack-token"
         AWS_CREDENTIALS = credentials('AWS-CREDENTIALS')
+        AWS_REGION = 'il-central-1' 
     }
 
     stages {
@@ -40,8 +41,8 @@ pipeline {
         stage('Deploy to AWS') {
             agent { label 'My-Ubuntu' }
             environment {
-                AWS_ACCESS_KEY_ID = credentials('AWS-CREDENTIALS')
-                AWS_SECRET_ACCESS_KEY = credentials('AWS-CREDENTIALS')
+                AWS_ACCESS_KEY_ID = AWS_CREDENTIALS_USR
+                AWS_SECRET_ACCESS_KEY = AWS_CREDENTIALS_PSW
             }
             steps {
                 script {
