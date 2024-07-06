@@ -29,7 +29,6 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'DockerHub', url: 'https://index.docker.io/v1/') {
-                        sh "docker push roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
                         sh "docker push roeealaluf/ecommerceproject:latest"
                     }
                 }
