@@ -29,7 +29,7 @@ pipeline {
                             docker rm ${containerName}
                         fi
                         """
-                        sh 'docker build --no-cache -t ecommerceproject:${env.BUILD_NUMBER} .'
+                        sh "docker build --no-cache -t ecommerceproject:${env.BUILD_NUMBER} ."
                     }
                 }
             }
