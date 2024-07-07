@@ -29,7 +29,7 @@ pipeline {
                             docker rm ${containerName}
                         fi
                         """
-                        sh 'docker build --no-cache -t ecommerceproject:latest .'
+                        sh 'docker build --no-cache -t ecommerceproject:${env.BUILD_NUMBER} .'
                     }
                 }
             }
@@ -38,7 +38,7 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'DockerHub', url: 'https://index.docker.io/v1/') {
-                        sh "docker push roeealaluf/ecommerceproject:latest"
+                        sh "docker push roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
                     }
                 }
             }
@@ -48,7 +48,7 @@ pipeline {
             agent { label 'My-Ubuntu' }
             steps {
                 script {
-                    sh "docker run -d --name roee -p 80:80 roeealaluf/ecommerceproject:latest"
+                    sh "docker run -d --name roee -p 80:80 roeealaluf/ecommerceproject:${env.BUILD_NUMBER}"
         }
     }             
 }
