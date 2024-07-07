@@ -31,13 +31,12 @@ def test_product_creation():
 @pytest.mark.django_db
 def test_api_product_creation():
     client = APIClient()
-    payload = dict(
-        name="testing123",
-        email="test11@test.com",
-        password="super-secret"
-    )
+    user = User.objects.create_user(username='testuser', password='123')
+    client.force_authenticate(self.user)
 
-    response = client.post("/api/products/create/", payload)
+
+
+    response = client.post("/api/products/create/")
 
     # data = response.data
 
