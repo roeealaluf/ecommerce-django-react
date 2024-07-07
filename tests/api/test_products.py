@@ -5,7 +5,7 @@ import pytest
 #   Product.objects.create
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
-
+from django.contrib.auth.models import User
 from base.models import Product
 
 
