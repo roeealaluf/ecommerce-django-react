@@ -32,7 +32,7 @@ def test_product_creation():
 def test_api_product_creation():
     client = APIClient()
     user = User.objects.create_user(username='testuser', password='123')
-    client.force_authenticate(self.user)
+    client.force_authenticate(user)
 
 
 
