@@ -21,9 +21,18 @@ pipeline {
         stage('Build') {
             agent { label 'My-Ubuntu' }
             steps {
-                sh 'docker build -t myapp:latest .'
+                    script {
+                        def containerName = "roee"
+                        sh """
+                        if [ \$(docker ps -a -q -f name=${containerName}) ]; then
+                            docker stop ${containerName}
+                            docker rm ${containerName}
+                        fi
+                        """
+                        sh 'docker build -t myapp:latest .'
+                    }
+                }
             }
-        }
         stage('Docker Push') {
             agent { label 'My-Ubuntu' }
             steps {
