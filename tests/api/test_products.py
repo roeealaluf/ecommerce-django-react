@@ -27,8 +27,8 @@ def test_product_creation():
 
 
 
-
 # Api test  - Integration testing
+@pytest.mark.django_db
 def test_api_product_creation():
     client = APIClient()
     payload = dict(
