@@ -71,7 +71,7 @@ pipeline {
         failure {
             script {
                 def msg = "Build failed at stage: ${currentBuild.currentResult}"
-                slackSend(channel: SLACK_CHANNEL, colot: 'red', message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}")
+                slackSend(channel: SLACK_CHANNEL, color: 'danger', message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}")
                 }
             }
         }
