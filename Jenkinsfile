@@ -52,16 +52,16 @@ pipeline {
         }
     }             
 }
-        // stage('Test') {
-        //     agent { label 'My-Ubuntu' }
-        //     steps {
-        //         sh 'test_user.py/unit'
-        //         sh 'test_products.py/e2e'
-        //         sh 'pip3 install -r requirements.txt'
-        //         sh 'python3 -m pytest '
-        //     }
-        // }
+        stage('Test') {
+            agent { label 'My-Ubuntu' }
+            steps {
+                sh 'test_user.py/unit'
+                sh 'test_products.py/e2e'
+                sh 'pip3 install -r requirements.txt'
+                sh 'python3 -m pytest '
+            }
         }
+    }
 
     post {
         success {
@@ -71,7 +71,7 @@ pipeline {
         failure {
             script {
                 def msg = "Build failed at stage: ${currentBuild.currentResult}"
-                slackSend(channel: SLACK_CHANNEL, message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}")
+                slackSend(channel: SLACK_CHANNEL, colot: 'danger', message: "Build ${env.BUILD_NUMBER} Failed: ${env.BUILD_URL}")
                 }
             }
         }
