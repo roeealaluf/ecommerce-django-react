@@ -55,8 +55,7 @@ pipeline {
         stage('Test') {
             agent { label 'My-Ubuntu' }
             steps {
-                sh 'python3 -m pytest -k test_user.py'
-                sh 'python3 -m pytest -k test_products.py'
+                sh 'python3 -m pytest'
 
             }
         }
