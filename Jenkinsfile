@@ -55,10 +55,10 @@ pipeline {
         stage('Test') {
             agent { label 'My-Ubuntu' }
             steps {
-                sh 'test_user.py/unit'
-                sh 'test_products.py/e2e'
                 sh 'pip3 install -r requirements.txt'
                 sh 'python3 -m pytest '
+                sh 'test_user.py'
+                sh 'test_products.py'
             }
         }
     }
