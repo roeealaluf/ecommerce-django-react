@@ -9,4 +9,4 @@ RUN pip install --upgrade defusedxml olefile Pillow
 RUN pip install -r requirements.txt
 COPY . .
 EXPOSE 80
-CMD ["python", "manage.py","runserver "]
+CMD ["python", "manage.py","runserver"]
