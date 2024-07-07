@@ -55,6 +55,8 @@ pipeline {
         stage('Test') {
             agent { label 'My-Ubuntu' }
             steps {
+                sh 'pip3 install --upgrade pip'
+                sh' pip3 install --upgrade Pillow' 
                 sh 'pip3 install -r requirements.txt'
                 sh 'python3 -m pytest '
                 sh 'test_user.py'
