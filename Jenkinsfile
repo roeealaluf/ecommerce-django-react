@@ -29,7 +29,7 @@ pipeline {
                             docker rm ${containerName}
                         fi
                         """
-                        sh 'docker build -t myapp:latest .'
+                        sh 'docker build --no-cache -t myapp:latest .'
                     }
                 }
             }
