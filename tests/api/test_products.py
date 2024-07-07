@@ -29,12 +29,11 @@ def test_product_creation():
 
 # Api test  - Integration testing
 @pytest.mark.django_db
+@pytest.mark.last
 def test_api_product_creation():
     client = APIClient()
-    user = User.objects.create_user(username='testuser', password='123')
+    user = User.objects.create_user(username='test11@test.com', password='super-secret')
     client.force_authenticate(user)
-
-
 
     response = client.post("/api/products/create/")
 
