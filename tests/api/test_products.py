@@ -31,8 +31,13 @@ def test_product_creation():
 # Api test  - Integration testing
 def test_api_product_creation():
     client = APIClient()
+    payload = dict(
+        name="testing123",
+        email="test11@test.com",
+        password="super-secret"
+    )
 
-    response = client.post("/api/products/create/")
+    response = client.post("/api/products/create/", payload)
 
     # data = response.data
 
