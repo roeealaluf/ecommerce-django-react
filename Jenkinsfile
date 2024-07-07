@@ -8,7 +8,7 @@ pipeline {
         SLACK_CREDENTIALS = "Slack-token"
         AWS_CREDENTIALS = credentials('AWS-CREDENTIALS')
         AWS_REGION = 'il-central-1' 
-        INSTANCE_NAME = 'Jenkins2'
+        INSTANCE_NAME = 'Jenkins2 '
     }
 
     stages {
