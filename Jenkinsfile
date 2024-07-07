@@ -39,8 +39,6 @@ pipeline {
             agent { label 'My-Ubuntu' }
             steps {
                 script {
-                    sh" if [ \$(docker ps -a -q -f name=${containerName}) ]; then
-                        docker stop ${containerName}
                     sh "docker run -d --name roee -p 80:80 roeealaluf/ecommerceproject:latest"
         }
     }             
