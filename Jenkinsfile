@@ -49,7 +49,7 @@ pipeline {
                 sh 'test_user.py/unit'
                 sh 'test_products.py/e2e'
                 sh 'pip3 install -r requirements.txt'
-                sh 'python3 -m pytest'
+                sh 'python3 -m pytest '
             }
         }
         }
